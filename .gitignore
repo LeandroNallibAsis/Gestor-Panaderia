@@ -1,0 +1,39 @@
+# Variables de entorno
+.env
+.env.*
+!.env.example
+
+# Rust / Cargo
+target/
+**/*.rs.bk
+
+# Node / SvelteKit / Frontend
+node_modules/
+.svelte-kit/
+build/
+dist/
+.vite/
+.output/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# Tauri (desktop & mobile)
+gen/
+apps/**/src-tauri/gen/
+
+# Datos de mapas y grafos OSRM (archivos pesados generados en local)
+infra/osrm-data/*.osm*
+infra/osrm-data/*.osrm*
+
+# IDEs y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini

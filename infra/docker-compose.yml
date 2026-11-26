@@ -1,0 +1,48 @@
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: panaderia-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-panaderia}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-panaderia_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-panaderia_control}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-panaderia} -d ${POSTGRES_DB:-panaderia_control}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  osrm:
+    image: ghcr.io/project-osrm/osrm-backend:latest
+    container_name: panaderia-osrm
+    profiles:
+      - osrm
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./osrm-data:/data
+    command: osrm-routed --algorithm mld /data/region.osrm
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -sf http://localhost:5000/route/v1/driving/0,0;0,0 || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+volumes:
+  postgres_data:

@@ -1,0 +1,12 @@
+[package]
+name = "panaderia-core"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+description = "Dominio compartido, DTOs y validaciones para Panadería Control"
+
+[dependencies]
+chrono = { workspace = true }
+serde = { workspace = true }
+thiserror = { workspace = true }
+uuid = { workspace = true }
